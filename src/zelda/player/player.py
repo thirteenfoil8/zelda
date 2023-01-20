@@ -1,6 +1,6 @@
 import pygame
 
-IMAGE_PATH = 'src/zelda/graphics/test/player.png'
+IMAGE_PATH = 'src/zelda/assets/graphics/test/player.png'
 
 
 class Player(pygame.sprite.Sprite):

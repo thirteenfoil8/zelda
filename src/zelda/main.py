@@ -7,6 +7,7 @@ from zelda.level.level import Level
 class Game:
     def __init__(self):
         # setup
+		
         pygame.init()
         self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption('Naruto Shippuden Ultimate Ninja Storm 8')
