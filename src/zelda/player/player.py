@@ -19,7 +19,6 @@ class Player(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         # movement
         self.direction = pygame.math.Vector2()
-        self.speed = 5
 
         # attack
         self.create_attack = create_attack
@@ -40,12 +39,18 @@ class Player(pygame.sprite.Sprite):
                           'attack': 20, 'magic': 10, 'speed': 10}
         self.upgrade_cost = {'health': 100, 'energy': 100,
                              'attack': 100, 'magic': 100, 'speed': 100}
+        
+        self.health = self.stats['health']
+        self.energy = self.stats['energy']
+        self.exp = 0
+        self.speed = self.stats['speed']
 
         self.obstacle_sprites = obstacles_sprites
 
     def import_player_assets(self):
         character_path = 'src/zelda/assets/graphics/player/'
-        self.animations = {'up': [], 'down': [], 'left': [], 'right': [], 'right_idle': [], 'left_idle': [], 'up_idle': [], 'down_idle': [],
+        self.animations = {'up': [], 'down': [], 'left': [], 'right': [], 
+                           'right_idle': [], 'left_idle': [], 'up_idle': [], 'down_idle': [],
                            'right_attack': [], 'left_attack': [], 'up_attack': [], 'down_attack': []}
         for animation in self.animations.keys():
             full_path = character_path + animation

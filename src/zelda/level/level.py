@@ -4,8 +4,8 @@ from zelda.level.tile import Tile
 from zelda.player.player import Player
 from zelda.camera.camera import YSortCameraGroup
 from zelda.utils.support import import_csv_layout, import_folder
-from zelda.utils.debug import debug
 from zelda.weapon.weapon import Weapon
+from zelda.ui.interface import UI
 
 
 class Level:
@@ -20,6 +20,9 @@ class Level:
 
         # attack sprites
         self.current_attack = None
+
+        # User Interface
+        self.ui = UI()
 
         # Sprite Setup
         self.create_map()
@@ -58,10 +61,12 @@ class Level:
                                  surface=surface)
 
         self.player = Player(pos=(2000, 1400), groups=[self.visible_sprites],
-                             obstacles_sprites=self.obstacles_sprites, create_attack=self.create_attack, destroy_weapon=self.destroy_weapon)
+                             obstacles_sprites=self.obstacles_sprites,
+                             create_attack=self.create_attack, destroy_weapon=self.destroy_weapon)
 
     def create_attack(self):
-        self.current_attack = Weapon(player=self.player, groups=[self.visible_sprites])
+        self.current_attack = Weapon(
+            player=self.player, groups=[self.visible_sprites])
 
     def destroy_weapon(self):
         if self.current_attack:
