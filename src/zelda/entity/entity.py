@@ -34,3 +34,4 @@ class Entity(pygame.sprite.Sprite):
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0:
                         self.hitbox.top = sprite.hitbox.bottom
+

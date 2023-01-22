@@ -135,6 +135,17 @@ class Player(Entity):
                 self.magic_index = 0
 
             self.magic = list(magic_data.keys())[self.magic_index]
+    
+    def animate(self):
+        animation = self.animations[self.status]
+
+        # loop over the frame index
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center=self.hitbox.center)
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
@@ -154,17 +165,6 @@ class Player(Entity):
         if not self.can_switch_magic:
             if current_time - self.magic_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_magic = True
-
-    def animate(self):
-        animation = self.animations[self.status]
-
-        # loop over the frame index
-        self.frame_index += self.animation_speed
-        if self.frame_index >= len(animation):
-            self.frame_index = 0
-
-        self.image = animation[int(self.frame_index)]
-        self.rect = self.image.get_rect(center=self.hitbox.center)
 
     def update(self):
         self.input()

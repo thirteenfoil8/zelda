@@ -2,6 +2,7 @@ import pygame
 from zelda.config.settings import TILESIZE
 from zelda.level.tile import Tile
 from zelda.entity.player.player import Player
+from zelda.entity.ennemy.ennemy import Enemy
 from zelda.camera.camera import YSortCameraGroup
 from zelda.utils.support import import_csv_layout, import_folder
 from zelda.weapon.weapon import Weapon
@@ -33,7 +34,8 @@ class Level:
         layouts = {
             'boundary': import_csv_layout('src/zelda/assets/map/map_FloorBlocks.csv'),
             'grass': import_csv_layout('src/zelda/assets/map/map_Grass.csv'),
-            'object': import_csv_layout('src/zelda/assets/map/map_LargeObjects.csv')
+            'object': import_csv_layout('src/zelda/assets/map/map_LargeObjects.csv'),
+            'entities': import_csv_layout('src/zelda/assets/map/map_Entities.csv')
         }
         graphics = {
             'grass': import_folder('src/zelda/assets/graphics/grass'),
@@ -61,11 +63,17 @@ class Level:
                             Tile(pos=(x, y), groups=[
                                  self.visible_sprites, self.obstacles_sprites], sprite_type='object',
                                  surface=surface)
-
-        self.player = Player(pos=(2000, 1400), groups=[self.visible_sprites],
-                             obstacles_sprites=self.obstacles_sprites,
-                             create_attack=self.create_attack, destroy_weapon=self.destroy_weapon,
-                             create_magic=self.create_magic, destroy_magic=self.destroy_magic)
+                        if style == "entities":
+                            if col == '394':
+                                self.player = Player(pos=(2000, 1400), groups=[self.visible_sprites],
+                                                     obstacles_sprites=self.obstacles_sprites,
+                                                     create_attack=self.create_attack, destroy_weapon=self.destroy_weapon,
+                                                     create_magic=self.create_magic, destroy_magic=self.destroy_magic)
+                            else:
+                                monster_name = self.select_monster(
+                                    layout, col_index, row_index)
+                                Enemy(monster_name, (x, y), groups=[
+                                      self.visible_sprites], obstacle_sprites=self.obstacles_sprites)
 
     def create_attack(self):
         self.current_attack = Weapon(
@@ -92,9 +100,22 @@ class Level:
             image_number = image_number % len(object)
         return object[image_number]
 
+    def select_monster(self, layout, col_index, row_index):
+        monster_number = layout[row_index][col_index]
+        if monster_number == '390':
+            monster_name = "bamboo"
+        elif monster_number == '391':
+            monster_name = "spirit"
+        elif monster_number == '392':
+            monster_name = "raccoon"
+        else:
+            monster_name = "squid"
+        return monster_name
+
     def run(self):
         # Update and draw game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.visible_sprites.enemy_update(self.player)
         self.ui.display(self.player)
         # debug(self.player.status)
