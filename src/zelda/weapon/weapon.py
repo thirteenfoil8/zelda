@@ -5,14 +5,15 @@ from zelda.config.settings import TILESIZE, weapon_data
 class Weapon(pygame.sprite.Sprite):
     def __init__(self, player, groups) -> None:
         super().__init__(groups)
+        self.sprite_type = 'weapon'
         direction = player.status.split("_")[0]
         self.player = player
 
         # graphics
         self.image = pygame.image.load(weapon_data[
-                                self.player.weapon]['graphic'].replace('full', direction)).convert_alpha()
+            self.player.weapon]['graphic'].replace('full', direction)).convert_alpha()
         self.get_weapon_direction(direction)
- 
+
     def get_weapon_direction(self, direction):
         if direction == "right":
             self.rect = self.image.get_rect(

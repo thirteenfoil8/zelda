@@ -5,6 +5,7 @@ from zelda.config.settings import TILESIZE, magic_data
 class Magic(pygame.sprite.Sprite):
     def __init__(self, player, groups) -> None:
         super().__init__(groups)
+        self.sprite_type = 'magic'
         self.player = player
         self.magic = magic_data[self.player.magic]
         self.style = self.player.magic
