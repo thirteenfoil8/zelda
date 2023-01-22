@@ -1,10 +1,11 @@
 import pygame
 from zelda.config.settings import TILESIZE
 from zelda.level.tile import Tile
-from zelda.player.player import Player
+from zelda.entity.player.player import Player
 from zelda.camera.camera import YSortCameraGroup
 from zelda.utils.support import import_csv_layout, import_folder
 from zelda.weapon.weapon import Weapon
+from zelda.weapon.magic import Magic
 from zelda.ui.interface import UI
 
 
@@ -20,6 +21,7 @@ class Level:
 
         # attack sprites
         self.current_attack = None
+        self.current_magic = None
 
         # User Interface
         self.ui = UI()
@@ -62,16 +64,27 @@ class Level:
 
         self.player = Player(pos=(2000, 1400), groups=[self.visible_sprites],
                              obstacles_sprites=self.obstacles_sprites,
-                             create_attack=self.create_attack, destroy_weapon=self.destroy_weapon)
+                             create_attack=self.create_attack, destroy_weapon=self.destroy_weapon,
+                             create_magic=self.create_magic, destroy_magic=self.destroy_magic)
 
     def create_attack(self):
         self.current_attack = Weapon(
             player=self.player, groups=[self.visible_sprites])
 
+    def create_magic(self):
+        self.current_magic = (
+            Magic(player=self.player, groups=[self.visible_sprites]))
+        self.current_magic.strength += self.player.stats['magic']
+
     def destroy_weapon(self):
         if self.current_attack:
             self.current_attack.kill()
         self.current_attack = None
+
+    def destroy_magic(self):
+        if self.current_magic:
+            self.current_magic.kill()
+        self.current_magic = None
 
     def select_object(self, layout, col_index, row_index, object):
         image_number = int(layout[row_index][col_index])

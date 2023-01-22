@@ -1,7 +1,7 @@
 import pygame
 from zelda.config.settings import UI_FONT, UI_FONT_SIZE, HEALTH_BAR_WIDTH, HEALTH_COLOR, BAR_HEIGHT, TEXT_COLOR
 from zelda.config.settings import ENERGY_BAR_WIDTH, ENERGY_COLOR, ITEM_BOX_SIZE, UI_BG_COLOR, UI_BORDER_COLOR
-from zelda.config.settings import UI_BORDER_COLOR_ACTIVE, weapon_data
+from zelda.config.settings import UI_BORDER_COLOR_ACTIVE, weapon_data, magic_data
 
 
 class UI:
@@ -48,6 +48,14 @@ class UI:
         weapon_rect = weapon_surf.get_rect(center=bg_rect.center)
         self.display_surface.blit(weapon_surf, weapon_rect)
 
+    def magic_overlay(self, player):
+        bg_rect = self.selection_box(
+            16 + ITEM_BOX_SIZE, 630, not player.can_switch_magic)
+        magic_surf = pygame.image.load(magic_data[
+            player.magic]['graphic']).convert_alpha()
+        magic_rect = magic_surf.get_rect(center=bg_rect.center)
+        self.display_surface.blit(magic_surf, magic_rect)
+
     def show_exp(self, exp):
         text_surf = self.font.render(str(int(exp)), False, TEXT_COLOR)
         x = self.display_surface.get_size()[0] - 20
@@ -67,6 +75,6 @@ class UI:
             player.energy, player.stats["energy"], self.energy_bar_rect, ENERGY_COLOR)
 
         self.weapon_overlay(player)
-        self.selection_box(16 + ITEM_BOX_SIZE, 630, False)  # magic
+        self.magic_overlay(player)
 
         self.show_exp(player.exp)
