@@ -8,6 +8,7 @@ from zelda.utils.support import import_csv_layout, import_folder
 from zelda.weapon.weapon import Weapon
 from zelda.weapon.magic import Magic
 from zelda.ui.interface import UI
+from zelda.particle.particle import AnimationPlayer
 
 
 class Level:
@@ -31,6 +32,9 @@ class Level:
 
         # Sprite Setup
         self.create_map()
+
+        # Particules
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         layouts = {
@@ -94,6 +98,9 @@ class Level:
                 if collision_sprites:
                     for target_sprites in collision_sprites:
                         if target_sprites.sprite_type == 'grass':
+                            pos = target_sprites.rect.center
+                            self.animation_player.create_grass_particles(
+                                pos=pos, groups=[self.visible_sprites])
                             target_sprites.kill()
                         else:
                             target_sprites.get_damage(
