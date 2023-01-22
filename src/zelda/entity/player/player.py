@@ -144,8 +144,14 @@ class Player(Entity):
     def get_full_weapon_damage(self):
         return self.stats['attack'] + weapon_data[self.weapon]['damage']
 
-    def get_full_spell_damage(self):
+    def get_full_magic_damage(self):
         return self.stats['magic'] + magic_data[self.magic]['strength']
+    
+    def energy_recovery(self):
+        if self.energy <= self.stats["energy"]:
+            self.energy += 0.01 * self.stats["magic"]
+        else:
+            self.energy = self.stats["energy"]
 
     def animate(self):
         animation = self.animations[self.status]
@@ -195,3 +201,4 @@ class Player(Entity):
         self.get_status()
         self.animate()
         self.move()
+        self.energy_recovery()

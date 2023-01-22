@@ -25,7 +25,7 @@ class AnimationPlayer:
             'bamboo': import_folder('src/zelda/assets/graphics/particles/bamboo'),
 
             # leafs
-            'leaf': (
+            'leaf': [
                 import_folder('src/zelda/assets/graphics/particles/leaf1'),
                 import_folder('src/zelda/assets/graphics/particles/leaf2'),
                 import_folder('src/zelda/assets/graphics/particles/leaf3'),
@@ -44,7 +44,7 @@ class AnimationPlayer:
                     'src/zelda/assets/graphics/particles/leaf5')),
                 self.reflect_images(import_folder(
                     'src/zelda/assets/graphics/particles/leaf6'))
-            )
+            ]
         }
 
     def reflect_images(self, frames):
@@ -67,14 +67,16 @@ class AnimationPlayer:
 class ParticleEffect(pygame.sprite.Sprite):
     def __init__(self, pos, animation_frames, groups):
         super().__init__(groups)
+        self.sprite_type = 'magic'
         self.frame_index = 0
         self.animation_speed = 0.15
         self.frames = animation_frames
-        self.image = self.image.get_rect(self.frame_index)
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center=pos)
 
     def animate(self):
         self.frame_index += self.animation_speed
-        if self.frame >= len(self.frames) - 1:
+        if self.frame_index >= len(self.frames) - 1:
             self.kill()
 
         else:
