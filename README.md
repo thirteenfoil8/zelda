@@ -12,7 +12,8 @@ Clone the repository.
 
 Add src to path
 
-´pip install pygame´
+`pip install pygame`
 
 from root folder:
-´python ./src/zelda/main.py ´ et voilà
+
+`python ./src/zelda/main.py` et voilà
