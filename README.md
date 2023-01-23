@@ -7,7 +7,7 @@ The idea will be to create a cleaner map on which the player and the ennemies wi
 Then, using [Dijkstra algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm), the ennemies will be far more difficult to avoid and kill.
 After that, based on a reinforcement learning policy, the longer you survive, the higher the difficulty.
 
-# Installation
+# Installation (Need python 3.10)
 Clone the repository.
 
 Add src to path
